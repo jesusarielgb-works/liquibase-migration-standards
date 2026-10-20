@@ -5,7 +5,7 @@
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd">
 
-    <changeSet id="2026-01-15-001-create-users-table" author="jesusarielgb">
+    <changeSet id="2026-01-15-001-create-users-table" author="ariel5253">
         <preConditions onFail="MARK_RAN">
             <not><tableExists tableName="users"/></not>
         </preConditions>
