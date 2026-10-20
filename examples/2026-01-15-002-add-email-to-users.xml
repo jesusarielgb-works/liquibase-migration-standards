@@ -5,7 +5,7 @@
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd">
 
-    <changeSet id="2026-01-15-002-add-email-to-users" author="jesusarielgb">
+    <changeSet id="2026-01-15-002-add-email-to-users" author="ariel5253">
         <preConditions onFail="MARK_RAN">
             <tableExists tableName="users"/>
             <not><columnExists tableName="users" columnName="email"/></not>

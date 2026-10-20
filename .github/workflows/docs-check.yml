@@ -1,0 +1,39 @@
+name: docs-check
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  docs:
+    uses: jesusarielgb-works/engineering-casebook/.github/workflows/check-docs.yml@v1.0.0
+    with:
+      casebook-ref: v1.0.0
+    secrets: inherit
+
+  examples:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env: { POSTGRES_PASSWORD: ci, POSTGRES_DB: ci }
+        ports: ['5432:5432']
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build a master changelog over the examples
+        run: |
+          {
+            echo '<?xml version="1.0" encoding="UTF-8"?>'
+            echo '<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"'
+            echo '  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"'
+            echo '  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd">'
+            for f in examples/*.xml; do echo "  <include file=\"$f\"/>"; done
+            echo '</databaseChangeLog>'
+          } > ci-master.xml
+      - name: Validate and test rollback of the examples
+        run: |
+          for cmd in validate update-testing-rollback; do
+            docker run --rm --network host -v "$PWD:/liquibase/changelog" -w /liquibase/changelog liquibase/liquibase:4.29 \
+              --url=jdbc:postgresql://localhost:5432/ci --username=postgres --password=ci \
+              --changelog-file=ci-master.xml $cmd
+          done
