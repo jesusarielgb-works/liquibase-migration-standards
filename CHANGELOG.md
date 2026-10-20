@@ -1,7 +1,7 @@
 # Changelog
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) | [SemVer](https://semver.org/)
 ## [Unreleased]
-## [1.1.0] - YYYY-MM-DD
+## [1.1.0] - 2026-10-20
 ### Added
 - `docs/04-verification.md`: the command that checks each rule, and an example CI job
   running `validate` and `update-testing-rollback` on an ephemeral database
